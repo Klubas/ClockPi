@@ -5,9 +5,8 @@ class Screen:
     def __init__(self, env='pi'):
        self.lcd = None
        self.config_screen()
-       current_date = time.strftime('%a %b %d, 20%y')
-       current_time = time.strftime('%H:%M:%S')
-       self.lcd.message(current_date + '\n' + current_time)
+       self.display_time()
+       self.auto_update_time()
     
     def config_screen(self):
         lcd_rs        = 25 
@@ -37,7 +36,13 @@ class Screen:
         self.lcd.autoscroll(False)
 
     def auto_update_time(self):
-        pass
+        t = threading.Thread(target=self.display_time, args=(1,), daemon=True)
+    
+    def display_time(self, time=None)
+        current_date = time.strftime('%a %b %d, 20%y')
+        current_time = time.strftime('%H:%M:%S')
+        self.lcd.clear()
+        self.lcd.message(current_date + '\n' + current_time)
 
 if __name__ == '__main__':
     screen = Screen()

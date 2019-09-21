@@ -25,7 +25,6 @@ class ClockSchedule:
             log_file.close()
 
     def create_schedule(self, hour=None):   
-
         if hour:
             print(hour)
             schedule.every().day.at(hour).do(self.job)
@@ -43,7 +42,4 @@ class ClockSchedule:
         while True:
             schedule.run_pending()
             time.sleep(1)
-            self.lcd.clear()
-            current_time = time.strftime('%H:%M:%S')
-            self.lcd.message(current_time)
 
