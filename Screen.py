@@ -1,11 +1,11 @@
 import time
 import Adafruit_CharLCD as LCD
+import threading
 
 class Screen:
     def __init__(self, env='pi'):
        self.lcd = None
        self.config_screen()
-       self.display_time()
        self.auto_update_time()
     
     def config_screen(self):
@@ -37,12 +37,16 @@ class Screen:
 
     def auto_update_time(self):
         t = threading.Thread(target=self.display_time, args=(1,), daemon=True)
+        t.start()
     
-    def display_time(self, time=None)
-        current_date = time.strftime('%a %b %d, 20%y')
-        current_time = time.strftime('%H:%M:%S')
-        self.lcd.clear()
-        self.lcd.message(current_date + '\n' + current_time)
+    def display_time(self, name=None):
+        while True:
+            current_date = time.strftime('%a %b %d, 20%y')
+            current_time = time.strftime('%H:%M:%S')
+            self.lcd.clear()
+            self.lcd.message(current_date + '\n' + current_time)
+            #print(current_time)
+            time.sleep(1)
 
 if __name__ == '__main__':
     screen = Screen()
