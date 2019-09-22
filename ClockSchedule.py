@@ -26,7 +26,6 @@ class ClockSchedule:
 
     def create_schedule(self, hour=None):   
         if hour:
-            print(hour)
             schedule.every().day.at(hour).do(self.job)
 
     def delete_schedule(self):
