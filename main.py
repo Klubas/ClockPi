@@ -7,6 +7,13 @@ import threading
 
 clock = Clock()
 
+def config_alarm(**kwargs):
+    """
+    sound
+    player
+    """
+    pass
+
 def create_alarm(hour="07:00"):
     clock.create_schedule(hour=hour)
 
