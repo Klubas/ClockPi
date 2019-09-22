@@ -1,19 +1,36 @@
+import sys
 import time
 import schedule
 import subprocess
+import threading
+import RPi.GPIO as GPIO
+
+gpio_pin = 3
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 class ClockSchedule:
     
-    def __init__(self, screen=None):
+    def __init__(self):
         self.player = None
         self.tone = None
-        self.lcd = screen
+
+    def play_sound(self, cmd):
+        if type(cmd) == str:
+            cmd=cmd.split(' ')
+
+        with subprocess.Popen(cmd) as process:
+            GPIO.wait_for_edge(gpio_pin, GPIO.FALLING)
+            print("Stopping alarm")
+            process.kill()
 
     def job(self):
         cmd = str(self.player) + str(self.tone)
         if self.player and self.tone:
-            s = subprocess.call(cmd, shell=True)
-            print(s)
+            s = threading.Thread(target=self.play_sound, args=(cmd, ), daemon=True)
+            s.start()
+
         else:
             log_file = open("log.log", "a")
 

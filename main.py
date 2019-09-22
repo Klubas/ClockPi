@@ -11,9 +11,10 @@ def create_alarm(hour="07:00"):
     clock.create_schedule(hour=hour)
 
 if __name__ == '__main__':
-    
+
+    screen = Screen()
+
     try:
-        screen = Screen()
 
         parser = argparse.ArgumentParser(
             description="Alarm Clock for raspberryPi"
@@ -24,7 +25,7 @@ if __name__ == '__main__':
             , metavar='hour'
             , type=str
             , help="set the alarm time"
-    
+
         )
 
         parser.add_argument(
@@ -42,13 +43,13 @@ if __name__ == '__main__':
         )
 
         args = parser.parse_args()
-    
+
         if args.Hour:
             hour = args.Hour
-    
+
         if args.Sound:
             sound = args.Sound
-    
+
         if args.Player:
             player = args.Player
 
@@ -57,7 +58,11 @@ if __name__ == '__main__':
 
         c = threading.Thread(target=create_alarm, args=(hour,))
         c.start()
+
         clock.start()
 
     except (KeyboardInterrupt, SystemExit):
+        screen.lcd.clear()
+        screen.lcd.enable_display(False)
+        screen.lcd.set_backlight(0)
         print("\nAlarm canceled")

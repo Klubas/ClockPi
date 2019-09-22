@@ -2,6 +2,7 @@ import time
 import Adafruit_CharLCD as LCD
 import threading
 
+
 class Screen:
     def __init__(self, env='pi'):
        self.lcd = None
