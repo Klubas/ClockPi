@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
 import sys
 import argparse
-from Screen import Screen
-from ClockSchedule import ClockSchedule as Clock
 import threading
 
-clock = Clock()
+from Screen import Screen
+from ClockSchedule import ClockSchedule as Clock
 
-def config_alarm(**kwargs):
-    """
-    sound
-    player
-    """
-    pass
+class AlarmController:
 
-def create_alarm(hour="07:00"):
-    clock.create_schedule(hour=hour)
+    def __init__(self):
+        self.clock = Clock()
+
+    def config_alarm(self, sound, player):
+        self.clock.set_default_sound(sound)
+        self.clock.set_default_player(player)
+
+    def create_alarm(self, hour="07:00", sound=None, tag=None):
+        self.clock.create_schedule(hour=hour)
+
 
 if __name__ == '__main__':
 
     screen = Screen()
+    alarm = AlarmController()
 
     try:
 
@@ -32,7 +35,6 @@ if __name__ == '__main__':
             , metavar='hour'
             , type=str
             , help="set the alarm time"
-
         )
 
         parser.add_argument(
@@ -59,14 +61,10 @@ if __name__ == '__main__':
 
         if args.Player:
             player = args.Player
-
-        clock.set_tone(sound)
-        clock.set_player(player)
-
-        c = threading.Thread(target=create_alarm, args=(hour,))
-        c.start()
-
-        clock.start()
+        
+        alarm.config_alarm(sound, player)
+        alarm.create_alarm(hour=hour)
+        alarm.clock.start()
 
     except (KeyboardInterrupt, SystemExit):
         screen.lcd.clear()

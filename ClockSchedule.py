@@ -12,9 +12,9 @@ GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 class ClockSchedule:
     
-    def __init__(self):
-        self.player = None
-        self.tone = None
+    def __init__(self, player='aplay'):
+        self.player = player
+        self.sound = None
 
     def play_sound(self, cmd):
         if type(cmd) == str:
@@ -25,37 +25,51 @@ class ClockSchedule:
             print("Stopping alarm")
             process.kill()
 
-    def job(self):
-        cmd = str(self.player) + str(self.tone)
-        if self.player and self.tone:
+    def job(self, sound, repeat=True):
+
+        cmd = str(self.player) + str(sound)
+
+        if self.player and sound:
             s = threading.Thread(target=self.play_sound, args=(cmd, ), daemon=True)
             s.start()
+
+            if not repeat:
+                return schedule.CancelJob
 
         else:
             log_file = open("log.log", "a")
 
-            log = "[{2}] Job execution failed:\n Player: {0} Tone: {1}\n CMD: {3}".format(
-                    self.player, self.tone, str(time.strftime("%H:%M:%S")), cmd
-            )
+            log = "[{2}] Job execution failed:\n Player: {0} sound: {1}\n CMD: {3}".format(
+                    self.player, sound, str(time.strftime("%H:%M:%S")), cmd)
 
             log_file.write(str(log))
             log_file.close()
 
-    def create_schedule(self, hour=None):   
-        if hour:
-            schedule.every().day.at(hour).do(self.job)
+    def create_schedule(self, hour=None, **kwargs):
 
-    def delete_schedule(self):
-        pass
+        sound   = self.sound     if kwargs.get('sound')  is None else str(kwargs.get('sound'))
+        repeat  = True           if kwargs.get('repeat') is None else bool(kwargs.get('repeat'))
+        tag     = 'alarm'        if kwargs.get('tag')    is None else str(kwargs.get('tag'))
 
-    def set_tone(self, file_path):
-        self.tone = file_path
+        if hour and sound:
+            schedule.every().day.at(hour).do(self.job, sound, repeat).tag(hour, tag)
+            return True, 'Alarm job scheduled at ' + hour
+        else:
+            return False, 'Job scheduling failed '
+             
+    def delete_schedule(self, tag):
+        schedule.clear(tag)
 
-    def set_player(self, player, args=''):
+    def set_default_sound(self, file_path):
+        self.sound = file_path
+
+    def set_default_player(self, player, args=''):
         self.player = player + args + ' '
 
     def start(self):
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+        schedule.run_continuously()
+        print("Scheduler started")
+        #while True:
+        #    schedule.run_pending()
+        #    time.sleep(1)
 
