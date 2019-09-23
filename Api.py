@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from AlarmControlle import AlarmController
+from AlarmController import AlarmController
 
 class Index(Resource):
     def get(self):

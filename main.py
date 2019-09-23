@@ -4,25 +4,13 @@ import argparse
 import threading
 import time
 
-from Screen import Screen
-from ClockSchedule import ClockSchedule as Clock
-from Api import Index
-
 from flask import Flask
 from flask_restful import Api
 
-class AlarmController:
-
-    def __init__(self):
-        self.clock = Clock()
-
-    def config_alarm(self, sound, player):
-        self.clock.set_default_sound(sound)
-        self.clock.set_default_player(player)
-
-    def create_alarm(self, hour="07:00", sound=None, tag=None):
-        self.clock.create_schedule(hour=hour)
-
+from AlarmController import AlarmController
+from Screen import Screen
+from ClockSchedule import ClockSchedule as Clock
+from Api import Index
 
 if __name__ == '__main__':
 
@@ -102,14 +90,11 @@ if __name__ == '__main__':
         
         app.run(host=host, port=port, debug=debug)
 
-        #while True:
-        #    hour = input("Alarm at: ")
-        #    tag = input("Tag: ")
-        #    alarm.create_alarm(hour=hour, tag=tag)
-        #    time.sleep(1)
-
     except (KeyboardInterrupt, SystemExit):
         screen.lcd.clear()
         screen.lcd.enable_display(False)
         screen.lcd.set_backlight(0)
         print("\nAlarm canceled")
+
+else:
+    sys.exit()
