@@ -66,10 +66,13 @@ class ClockSchedule:
     def set_default_player(self, player, args=''):
         self.player = player + args + ' '
 
+    def _run_job_thread_(self, interval):
+        while True:
+            schedule.run_pending()
+            time.sleep(interval)
+
     def start(self):
-        schedule.run_continuously()
         print("Scheduler started")
-        #while True:
-        #    schedule.run_pending()
-        #    time.sleep(1)
+        t = threading.Thread(target=self._run_job_thread_, args=(1,), daemon=True)
+        t.start()
 
