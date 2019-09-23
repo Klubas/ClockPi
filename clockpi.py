@@ -9,8 +9,7 @@ from flask_restful import Api
 
 from AlarmController import AlarmController
 from Screen import Screen
-from ClockSchedule import ClockSchedule as Clock
-from Api import Index
+from ClockAPi import Index, AlarmList, Alarm, ConfigAlarm
 
 if __name__ == '__main__':
 
@@ -18,10 +17,13 @@ if __name__ == '__main__':
     api = Api(app)
 
     screen = Screen()
-    alarm = AlarmController()
+    
 
     #add resources
     api.add_resource(Index, '/')
+    api.add_resource(AlarmList, 'alarms')
+    api.add_resource(Alarm, 'new_alarm')
+    api.add_resource(ConfigAlarm, 'preferences')
 
     try:
 
@@ -86,7 +88,7 @@ if __name__ == '__main__':
             debug = False
         
         alarm.config_alarm(sound, player)
-        alarm.clock.start()
+        
         
         app.run(host=host, port=port, debug=debug)
 
