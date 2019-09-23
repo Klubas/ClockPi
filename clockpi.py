@@ -21,9 +21,9 @@ if __name__ == '__main__':
 
     #add resources
     api.add_resource(Index, '/')
-    api.add_resource(AlarmList, 'alarms')
-    api.add_resource(Alarm, 'new_alarm')
-    api.add_resource(ConfigAlarm, 'preferences')
+    api.add_resource(AlarmList, '/alarms')
+    api.add_resource(Alarm, '/new_alarm')
+    api.add_resource(ConfigAlarm, '/preferences')
 
     try:
 
@@ -87,8 +87,7 @@ if __name__ == '__main__':
         else:
             debug = False
         
-        alarm.config_alarm(sound, player)
-        
+#        alarm.config_alarm(sound, player)
         
         app.run(host=host, port=port, debug=debug)
 

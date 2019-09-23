@@ -9,4 +9,4 @@ class AlarmController:
         self.clock.set_default_player(player)
 
     def create_alarm(self, hour="07:00", sound=None, repeat=True, tag=None):
-        self.clock.create_schedule(hour=hour)
+        return self.clock.create_schedule(hour=hour)

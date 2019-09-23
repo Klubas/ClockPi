@@ -5,40 +5,44 @@ from flask_restful import Resource
 from AlarmController import AlarmController
 
 alarm = AlarmController()
+alarm.config_alarm(sound='sound/sound.mp3', player='mpv --no-terminal')
 alarm.clock.start()
 
 class Index(Resource):
     def get(self):
-        return {'Status', 'OK'}, 200
+        return {'Status': 'OK'}, 200
+
 
 class AlarmList(Resource):
     def get(self):
-        return {'Status', 'OK'}, 200
+        return {'Status': 'OK'}, 200
+
 
 class ConfigAlarm(Resource):
     def get(self):
-        return {'Status', 'OK'}, 200
+        return {'Status': 'OK'}, 200
+
 
 class Alarm(Resource):
-    def put(self):
+    def post(self):
         
         json = request.get_json(force=True)
-        json_dict=json.loads()
+        #json_dict=json.loads()
         
-        print(json_dict)
+        print(json)
 
-        hour=json_dict['hour']
-        sound=json_dict['sound']
-        repeat=json_dict['repeat']
-        tag=json_dict['tag']
+        hour=json['hour']
+        #sound=json['sound']
+        #repeat=json['repeat']
+        #tag=json['tag']
 
-        alarm.create_alarm(
+        status = alarm.create_alarm(
             hour=hour
-            , sound=sound
-            , repeat=repeat
-            , tag=tag 
+            #, sound=sound
+            #, repeat=repeat
+            #, tag=tag 
         )
 
-        return {'Hour': hour}, 200
+        return {'Response': status[1]}, 200
 
         
