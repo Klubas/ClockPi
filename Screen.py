@@ -40,13 +40,38 @@ class Screen:
         t = threading.Thread(target=self.display_time, args=(1,), daemon=True)
         t.start()
     
+    def get_date_time(self):
+       current_date = time.strftime('%a %b %d, 20%y')
+       current_time = time.strftime('%H:%M:%S')
+       return current_date + '\n' + current_time
+            
+   
     def display_time(self, name=None):
+        date_time = self.get_date_time()
+        self.lcd.message(date_time)
+
         while True:
-            current_date = time.strftime('%a %b %d, 20%y')
-            current_time = time.strftime('%H:%M:%S')
-            self.lcd.clear()
-            self.lcd.message(current_date + '\n' + current_time)
-            #print(current_time)
+            current_date_time = self.get_date_time()
+            col = 0
+            row = 0
+            # print("current_date_time: " + current_date_time)
+            for c in current_date_time:
+                # print(c + '-' + date_time[col])
+                if c != date_time[col]:
+                    self.lcd.set_cursor(col, row)
+                    self.lcd.write8(ord(c), char_mode=True)
+
+                if c == '\n':
+                    row = row + 1
+                    col = - 1
+                col = col + 1
+            
+            if row == 1:
+               while col <= 8:
+                   self.lcd.write8(ord(' '), char_mode=True)
+                   col = col + 1
+
+            date_time = current_date_time
             time.sleep(1)
 
 if __name__ == '__main__':

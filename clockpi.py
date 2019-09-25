@@ -32,27 +32,6 @@ if __name__ == '__main__':
         )
 
         parser.add_argument(
-            'Hour'
-            , metavar='hour'
-            , type=str
-            , help="set the alarm time"
-        )
-
-        parser.add_argument(
-            'Sound'
-            , metavar='sound'
-            , type=str
-            , help="what sound should ClockPi play for the alarm"
-        )
-
-        parser.add_argument(
-            'Player'
-            , metavar='player'
-            , type=str
-            , help="what audio player should ClockPi use"
-        )
-
-        parser.add_argument(
             'Host'
             , metavar='hostname:port'
             , type=str
@@ -68,15 +47,6 @@ if __name__ == '__main__':
 
         args = parser.parse_args()
 
-        if args.Hour:
-            hour = args.Hour
-
-        if args.Sound:
-            sound = args.Sound
-
-        if args.Player:
-            player = args.Player
-
         if args.Host:
             hostname = args.Host.split(":")
             host=hostname[0]
@@ -89,7 +59,8 @@ if __name__ == '__main__':
         
 #        alarm.config_alarm(sound, player)
         
-        app.run(host=host, port=port, debug=debug)
+       	app.run(host=host, port=port, debug=debug)
+        screen.lcd.enable_display(False)
 
     except (KeyboardInterrupt, SystemExit):
         screen.lcd.clear()
