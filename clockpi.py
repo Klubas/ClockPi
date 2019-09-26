@@ -7,9 +7,9 @@ import time
 from flask import Flask
 from flask_restful import Api
 
-from AlarmController import AlarmController
-from Screen import Screen
-from ClockAPi import Index, AlarmList, Alarm, ConfigAlarm
+from controller.AlarmController import AlarmController
+from controller.Screen import Screen
+from controller.ClockAPi import Index, AlarmList, Alarm, ConfigAlarm
 
 if __name__ == '__main__':
 
