@@ -10,7 +10,7 @@
 
 * Starting the server
 
-		clockpy.py <hostname>:<port> <debug>
+		clockpy.py --hostname <hostname>:<port> [--debug]
 		clockpi.py localhost:8080 True
 
 

@@ -32,34 +32,28 @@ if __name__ == '__main__':
         )
 
         parser.add_argument(
-            'Host'
+            '--hostname'
             , metavar='hostname:port'
             , type=str
             , help="hostname and port number for the server in the format: <hostname>:<port>"
         )
 
         parser.add_argument(
-            'Debug'
-            , metavar='debug'
-            , type=bool
-            , help="Run in debug mode (True/False)"
+            '--debug'
+            , help="Run in debug mode"
+            , action='store_true'
         )
 
         args = parser.parse_args()
-
-        if args.Host:
-            hostname = args.Host.split(":")
+        
+        print(args)
+        
+        if args.hostname:
+            hostname = args.hostname.split(":")
             host=hostname[0]
             port=int(hostname[1])
-
-        if args.Debug:
-            debug = args.Debug
-        else:
-            debug = False
         
-#        alarm.config_alarm(sound, player)
-        
-       	app.run(host=host, port=port, debug=debug)
+       	app.run(host=host, port=port, debug=args.debug)
         screen.lcd.enable_display(False)
 
     except (KeyboardInterrupt, SystemExit):
