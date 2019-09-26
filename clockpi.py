@@ -54,7 +54,6 @@ if __name__ == '__main__':
             port=int(hostname[1])
         
        	app.run(host=host, port=port, debug=args.debug)
-        screen.lcd.enable_display(False)
 
     except (KeyboardInterrupt, SystemExit):
         screen.lcd.clear()
