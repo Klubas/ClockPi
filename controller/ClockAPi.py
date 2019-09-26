@@ -2,7 +2,7 @@ import json
 from flask import request
 from flask_restful import Resource
 
-from AlarmController import AlarmController
+from controller.AlarmController import AlarmController
 
 alarm = AlarmController()
 alarm.config_alarm(sound='sound/sound.mp3', player='mpv --no-terminal')
