@@ -66,10 +66,10 @@ class Screen:
                     col = - 1
                 col = col + 1
             
-            if row == 1:
-               while col <= 8:
-                   self.lcd.write8(ord(' '), char_mode=True)
-                   col = col + 1
+            #if row == 1:
+             #  while col <= 8:
+              #     self.lcd.write8(ord(' '), char_mode=True)
+               #    col = col + 1
 
             date_time = current_date_time
             time.sleep(1)

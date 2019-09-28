@@ -11,7 +11,7 @@
 * Starting the server
 
 		clockpy.py --hostname <hostname>:<port> [--debug]
-		clockpi.py localhost:8080 True
+		clockpi.py --hostname localhost:8080
 
 
 * Scheduling alarms via API
