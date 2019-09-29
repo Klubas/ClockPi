@@ -58,8 +58,12 @@ class Screen:
             for c in current_date_time:
                 # print(c + '-' + date_time[col])
                 if c != date_time[col]:
-                    self.lcd.set_cursor(col, row)
-                    self.lcd.write8(ord(c), char_mode=True)
+                    if col == len(date_time) - 7:
+                        self.lcd.clear()
+                        self.lcd.message(date_time)
+                    else:
+                        self.lcd.set_cursor(col, row)
+                        self.lcd.write8(ord(c), char_mode=True)
 
                 if c == '\n':
                     row = row + 1
