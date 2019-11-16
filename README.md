@@ -20,3 +20,12 @@
 * Scheduling alarms via API
 
 		curl -X POST -H "Content-Type: application/json" -d '{"hour":"07:00"}' http://localhost:8080/new_alarm
+ ## Links
+ 
+ * Pinout
+ 
+ 	https://pinout.xyz/pinout/pin16_gpio23#
+ 
+ * LCD
+ 
+ 	https://pimylifeup.com/raspberry-pi-lcd-16x2/
