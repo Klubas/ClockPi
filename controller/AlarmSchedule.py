@@ -10,6 +10,7 @@ gpio_pin = 26
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+
 class ClockSchedule:
     
     def __init__(self, player='aplay'):
@@ -29,14 +30,27 @@ class ClockSchedule:
                 elif process.poll() is not None:
                     self.play_sound(cmd)
 
-    def job(self, sound, repeat=True):
-
+    def job(self, sound, repeat=True, actions=None):
+        threads = list()
         cmd = str(self.player) + str(sound)
 
         if self.player and sound:
             try:
-                s = threading.Thread(target=self.play_sound, args=(cmd, ), daemon=True)
-                s.start()
+
+                threads.append(
+                    threading.Thread(target=self.play_sound, args=(cmd, ), daemon=True)
+                )
+
+                if actions:
+                    for action in actions:
+                        threads.append(
+                            threading.Thread(
+                                target=action['function'], args=(action['args'])
+                            )  # args must be a tuple
+                        )
+
+                for t in threads:
+                    t.start()
 
                 if not repeat:
                     return schedule.CancelJob
@@ -53,14 +67,14 @@ class ClockSchedule:
             log_file.write(str(log))
             log_file.close()
 
-    def create_schedule(self, hour=None, **kwargs):
+    def create_schedule(self, hour=None, actions=None, **kwargs):
 
-        sound   = self.sound     if kwargs.get('sound')  is None else str(kwargs.get('sound'))
-        repeat  = True           if kwargs.get('repeat') is None else bool(kwargs.get('repeat'))
-        tag     = 'alarm'        if kwargs.get('tag')    is None else str(kwargs.get('tag'))
+        sound = self.sound if kwargs.get('sound') is None else str(kwargs.get('sound'))
+        repeat = True if kwargs.get('repeat') is None else bool(kwargs.get('repeat'))
+        tag = 'alarm' if kwargs.get('tag') is None else str(kwargs.get('tag'))
 
         if hour and sound:
-            schedule.every().day.at(hour).do(self.job, sound, repeat).tag(hour, tag)
+            schedule.every().day.at(hour).do(self.job, sound, repeat, actions).tag(hour, tag)
             return True, 'Alarm job scheduled at ' + hour
         else:
             return False, 'Job scheduling failed '

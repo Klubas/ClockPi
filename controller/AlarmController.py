@@ -1,4 +1,5 @@
-from controller.ClockSchedule import ClockSchedule as Clock
+from controller.AlarmSchedule import ClockSchedule as Clock
+
 
 class AlarmController:
     def __init__(self):

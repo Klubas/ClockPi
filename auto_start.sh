@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 clockpi_path=$HOME/bin/ClockPi

@@ -9,21 +9,19 @@ from flask_restful import Api
 
 from controller.AlarmController import AlarmController
 from controller.Screen import Screen
-from controller.ClockAPi import Index, AlarmList, Alarm, ConfigAlarm
+from controller.ClockAPi import Index, AlarmList, Alarm, ConfigAlarm, Bulb
 
 if __name__ == '__main__':
 
     app = Flask(__name__)
     api = Api(app)
 
-    screen = Screen()
-    
-
     #add resources
     api.add_resource(Index, '/')
-    api.add_resource(AlarmList, '/alarms')
-    api.add_resource(Alarm, '/new_alarm')
-    api.add_resource(ConfigAlarm, '/preferences')
+    api.add_resource(AlarmList, '/alarm/alarms')
+    api.add_resource(Alarm, '/alarm/new_alarm')
+    api.add_resource(ConfigAlarm, '/alarm/preferences')
+    api.add_resource(Bulb, '/light/bulb')
 
     try:
 
@@ -50,12 +48,15 @@ if __name__ == '__main__':
         
         if args.hostname:
             hostname = args.hostname.split(":")
-            host=hostname[0]
-            port=int(hostname[1])
+            host = hostname[0]
+            port = int(hostname[1])
+        else:
+            sys.exit(-1)
         
-       	app.run(host=host, port=port, debug=args.debug)
+        app.run(host=host, port=port, debug=args.debug)
 
     except (KeyboardInterrupt, SystemExit):
+        screen = Screen()
         screen.lcd.clear()
         screen.lcd.enable_display(False)
         screen.lcd.set_backlight(0)

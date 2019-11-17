@@ -1,1 +1,10 @@
-curl -X POST -H "Content-Type: application/json" -d '{"hour":"07:00"}' http://localhost:8080/new_alarm
+# set time
+curl -X POST -H "Content-Type: application/json" -d '{"hour":"07:00"}' http://localhost:8080/alarm/new_alarm
+
+#Turn light on or off
+curl -X POST -H "Content-Type: application/json" -d '{"action": "off"}' http://192.168.0.103:8080/light/bulb
+
+# Change light color
+curl -X POST -H "Content-Type: application/json" -d '{"action": "color", "params": {"color": "120 120 120"}}' http://192.168.0.103:8080/light/bulb
+
+
